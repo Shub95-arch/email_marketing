@@ -16,3 +16,15 @@ exports.getMe = (req, res, next) => {
   req.params.id = req.user.id;
   next();
 };
+
+exports.getUser = catchAsync(async (req, res, next) => {
+  const currentUser = await User.findById(req.params.id);
+  if (!currentUser)
+    return next(new AppError('No Tour found with that id', 404));
+  res.status(200).json({
+    status: 'success',
+    data: {
+      currentUser,
+    },
+  });
+});
