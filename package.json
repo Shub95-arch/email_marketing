@@ -17,6 +17,7 @@
     "express": "^4.19.2",
     "form-data": "^4.0.0",
     "html-to-text": "^6.0.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^5.13.22",
     "nodemailer": "^6.9.14",
     "nodemon": "^3.1.4",

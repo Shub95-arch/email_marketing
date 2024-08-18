@@ -2,17 +2,17 @@ const User = require('../Models/userModel');
 const catchAsync = require('../utils/catchAsync');
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.find();
   res.status(200).json({
     status: 'success',
+    result: users.length,
     data: {
-      message: 'Hello from the server side',
+      users,
     },
   });
 });
 
-exports.createUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined', // Please use the signup route->WE ARE GOING TO USE THE SIGNUP
-  });
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
 };
