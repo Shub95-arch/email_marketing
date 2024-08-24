@@ -72,7 +72,7 @@ async function sendEmail(
 
 // Call the function
 // sendEmail(
-//   'williamdefoe',
+//   'license',
 //   'DB',
 //   'shop@desertkart.in',
 //   'your purchase was actual success',
