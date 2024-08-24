@@ -54,14 +54,18 @@ async function sendEmail(
       res_data = 'Email sent successfully';
     }
 
-    console.log(`${receiver_email} => ${res_data}`);
+    return `${receiver_email} => ${res_data}`;
   } catch (error) {
-    console.error('An error occurred while making the request:');
     if (error.response) {
-      console.error('Status code:', error.response.status);
-      console.error('Response data:', error.response.data);
+      return (
+        'Response data:',
+        error.response.data,
+        '\n',
+        'Status code:',
+        error.response.status
+      );
     } else {
-      console.error('Error:', error.message);
+      return 'Error:', error.message;
     }
   }
 }
@@ -75,3 +79,4 @@ async function sendEmail(
 //   'shubhamkr1188@gmail.com',
 //   'This is your message content.'
 // );
+module.exports = sendEmail;

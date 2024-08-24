@@ -80,7 +80,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (!token)
     return next(new AppError('You are not logged in! Please login first', 401));
 
-  //-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------//
 
   //2> verification of token
   const decoded = await util.promisify(jwt.verify)(
@@ -108,3 +108,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   res.locals.user = currentUser;
   next(); //GRANCT ACCESS TO PROTECTED ROUTE
 });
+
+
+

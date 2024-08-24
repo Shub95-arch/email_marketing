@@ -3,6 +3,7 @@ const path = require('path');
 
 const userRouter = require('./routes/userRoutes'); //Routers
 const smtpRouter = require('./routes/smtpRoute');
+const mailRouter = require('./routes/sendMailRoute');
 
 const morgan = require('morgan');
 const globalErrorHandler = require('./controller/errorController');
@@ -13,6 +14,7 @@ app.use(express.json({ limit: '10kb' })); //now if we have a body more than 10kb
 
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/smtp', smtpRouter);
+app.use('/api/v1/mail', mailRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Cant Find ${req.originalUrl} on this server`, 404)); //ERROR HANDLERS

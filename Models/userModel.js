@@ -15,6 +15,18 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     validate: [validator.isEmail, 'Please provide a valid email'],
   },
+  smtp: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Smtp',
+    },
+  ],
+  logs: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Email_logs',
+    },
+  ],
   photo: {
     type: String,
     default: 'default.jpg',
@@ -88,6 +100,22 @@ userSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {
   }
   return false; //False mean pass not changed
 };
+
+userSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'smtp', // this to populate or fill the users
+    select: '-__v -passwordChangedAT',
+    // this to exclude from the query
+  });
+  next();
+});
+
+userSchema.pre(/^find/, function (next) {
+  // this is a query middleware which is used for all the query that starts with find
+
+  this.find({ active: { $ne: false } });
+  next(); // this is to find only the users that has active to set to true
+});
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

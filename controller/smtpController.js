@@ -1,4 +1,5 @@
 const Smtp = require('../Models/smtpModel');
+const User = require('../Models/userModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const Email = require('../mailer/mailer');
@@ -42,6 +43,9 @@ exports.getSmtp = catchAsync(async (req, res, next) => {
 
 exports.createSmtp = catchAsync(async (req, res, next) => {
   const smtp = await Smtp.create(req.body);
+  await User.findByIdAndUpdate(req.user.id, {
+    $push: { smtp: smtp.id },
+  });
   res.status(201).json({
     status: 'success',
     data: {
