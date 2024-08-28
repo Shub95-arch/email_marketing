@@ -1,0 +1,86 @@
+extends base
+
+block content
+        main
+            h2.dash-title Overview
+            .dash-cards
+                .card-single
+                    .card-body
+                        span.ti-briefcase
+                        div
+                            h5 Account Balance
+                            h4 #{user.name.split(' ')[0]}
+                    .card-footer
+                        a(href='') View all
+                .card-single
+                    .card-body
+                        span.ti-reload
+                        div
+                            h5 Days Remaining
+                            h4 $19,500.45
+                    .card-footer
+                        a(href='') View all
+                .card-single
+                    .card-body
+                        span.ti-check-box
+                        div
+                            h5 Account Status
+                            h4 $20,659
+                    .card-footer
+                        a(href='') View all
+            section.recent
+                .activity-grid
+                    .activity-card
+                        h3 Recent activity
+                        .table-responsive
+                            table
+                                thead
+                                    tr
+                                        th Message
+                                        th Sent On
+                                        th To Mail
+                                        th From Address
+                                        th Mail Type
+                                        th Status
+                                tbody
+                                    each log in user.logs
+                                        tr
+                                            td #{log.Body.substr(0,35)+' ...'}
+                                            td #{log.sentOn}
+                                            td #{log.toMail}
+                                            td #{log.fromEmail}
+                                            td #{log.mailType}
+                                            td
+                                                -if (log.status==='success')
+                                                    span.badge.success success
+                                                -else 
+                                                    span.badge.warning failed
+                                                //- span.badge.success failed
+                                    
+                    .summary
+                        .summary-card
+                            .summary-single
+                                span.ti-id-badge
+                                div
+                                    h5 #{logs.totalMailCount} : #{logs.todayCount} 
+                                    small Total Mails : Mails sent Today
+                            .summary-single
+                                span.ti-calendar
+                                div
+                                    h5 #{logs.spoofCount} : #{logs.smtpCount}
+                                    small Spoof : Smtp 
+                            .summary-single
+                                span.ti-face-smile
+                                div
+                                    h5 #{logs.successCount} : #{logs.failedCount}
+                                    small Success : Failed
+                        .bday-card
+                            .bday-flex
+                                .bday-img
+                                .bday-info
+                                    h5 Dwayne F. Sanders
+                                    small Birthday Today
+                            .text-center
+                                button
+                                    span.ti-gift
+                                    |                     Wish him

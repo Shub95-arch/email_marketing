@@ -1,0 +1,44 @@
+extends base
+
+block content
+  link(rel='stylesheet' href='style4.css')
+
+  .smtp-selection
+    .input-group
+      
+
+  .container
+    form.form-container
+      .form-fields
+        .input-group.horizontal-group
+          .input-field
+            label(for='from-name') From Name
+            input#from-name(type='text' name='from-name' required=true placeholder='Your Name')
+          .input-field
+            label(for='from-email') From
+            input#from-email(type='email' name='from-email' required=true placeholder='Your Email Address')
+        .input-group
+          label(for='to-email') To
+          input#to-email(type='email' name='to-email' required=true placeholder='Recipient Email')
+        .input-group
+          label(for='email-subject') Subject
+          input#email-subject(type='text' name='email-subject' required=true placeholder='Email Subject')
+        .input-group
+          label(for='email-message') Message
+          textarea#email-message(name='email-message' required=true placeholder='Write your message here')
+        .input-group
+          label(for='attachment') Attachments
+          input#attachment(type='file' name='attachment' multiple)
+      .form-actions
+        button#send_mail_btn(type='submit') Send Email
+
+
+    .preview-container
+      .preview-title Message Preview
+      #message-preview.preview-content Your HTML message will appear here...
+
+  script.
+    document.getElementById('email-message').addEventListener('input', function() {
+      const messagePreview = document.getElementById('message-preview');
+      messagePreview.innerHTML = this.value || 'Your HTML message will appear here...';
+    });

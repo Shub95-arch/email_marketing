@@ -1,0 +1,31 @@
+extends base
+
+block content
+    main
+        h2.dash-title Account Settings
+        .account-forms
+            .form-card
+                h3 Change Name &amp; Email
+                form
+                    .input-group
+                        label(for='name') Name
+                        input#name(type='text' name='name' placeholder='Enter your name')
+                    .input-group
+                        label(for='email') Email
+                        input#email(type='email' name='email' placeholder='Enter your email')
+                    .form-actions
+                        button(type='submit') Update Info
+            .form-card
+                h3 Change Password
+                form
+                    .input-group
+                        label(for='current-password') Current Password
+                        input#current-password(type='password' name='current-password' placeholder='Enter current password')
+                    .input-group
+                        label(for='new-password') New Password
+                        input#new-password(type='password' name='new-password' placeholder='Enter new password')
+                    .input-group
+                        label(for='confirm-password') Confirm New Password
+                        input#confirm-password(type='password' name='confirm-password' placeholder='Confirm new password')
+                    .form-actions
+                        button(type='submit') Change Password

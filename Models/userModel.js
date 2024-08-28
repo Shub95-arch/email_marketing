@@ -102,11 +102,10 @@ userSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {
 };
 
 userSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'smtp', // this to populate or fill the users
-    select: '-__v -passwordChangedAT',
+  this.select(
+    '-__v -passwordChangedAT'
     // this to exclude from the query
-  });
+  );
   next();
 });
 

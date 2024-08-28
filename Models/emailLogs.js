@@ -1,15 +1,22 @@
 const mongoose = require('mongoose');
-const convertToReadableDate = (timestamp) => {
-  const date = new Date(timestamp);
-  return date.toLocaleString(); // Convert to a human-readable string
-};
+// const convertToReadableDate = (timestamp) => {
+//   const date = new Date(timestamp);
+//   return date.toLocaleString(); // Convert to a human-readable string
+// };
+// const moment = require('moment'); // Import moment.js or another date library
+
+// function convertToISO(dateStr) {
+//   // Assuming your format is 'DD/MM/YYYY, HH:MM:SS am/pm'
+//   return moment(dateStr, 'DD/MM/YYYY, hh:mm:ss a').toISOString();
+// }
+
 const logSchema = new mongoose.Schema({
   toMail: String,
   fromEmail: String,
   status: { type: String, enum: ['success', 'failed'] },
   sentOn: {
-    type: String,
-    default: () => convertToReadableDate(Date.now()),
+    type: Date,
+    default: Date.now,
   },
   subject: String,
   Body: String,

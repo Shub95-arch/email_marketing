@@ -1,0 +1,80 @@
+doctype html
+head
+    
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1')
+    title securenet | #{title}
+    link(rel='stylesheet' href='https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css')
+    link(rel='stylesheet' href='style.css')
+    link(rel='stylesheet' href='style2.css')
+    style.
+        .profile-menu {
+        position: relative;
+        display: inline-block;
+        }
+        .profile-icon {
+        cursor: pointer;
+        }
+        .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        min-width: 160px;
+        }
+        .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        }
+        .dropdown-content a:hover {
+        background-color: #f1f1f1;
+        }
+        .profile-menu:hover .dropdown-content {
+        display: block;
+        }
+    block head
+
+input#sidebar-toggle(type='checkbox')
+.sidebar
+    .sidebar-header
+        h3.brand
+            span.ti-unlink
+            span secureNET
+        label.ti-menu-alt(for='sidebar-toggle')
+    .sidebar-menu
+        ul
+            li
+                a(href='')
+                    span.ti-home
+                    span Home
+            li
+                a(href='send-mail')
+                    span.ti-agenda
+                    span Send Mail
+            li
+                a(href='smtp')
+                    span.ti-clipboard
+                    span SMTP
+            li
+                a(href='spoof-mail')
+                    span.ti-folder
+                    span Secure Mailer
+            li
+                a(href='activity')
+                    span.ti-time
+                    span Activity
+            li
+                a(href='account')
+                    span.ti-settings
+                    span Account
+.main-content
+    include _header
+
+    block content
+
+    
+    script(src='/js/bundle.js')

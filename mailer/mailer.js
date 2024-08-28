@@ -35,7 +35,6 @@ module.exports = class Email {
         subject,
       });
     } else {
-      console.log('yes this route');
       html = template;
     }
 

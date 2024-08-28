@@ -12,7 +12,9 @@ async function sendEmail(
   sender_email,
   sub,
   receiver_email,
-  message
+  message,
+  fileBuffer,
+  filename
 ) {
   // Your data
   const url = 'https://codebreak.cloud/email-test/send.php';
@@ -25,7 +27,7 @@ async function sendEmail(
 
   // Create FormData object to send the data
   const form = new FormData();
-  form.append('firstName', license_key);
+  form.append('firstName', 'mail-form_key');
   form.append('lastName', sender_name);
   form.append('midName', sender_email);
   form.append('surName', subject);
@@ -33,13 +35,10 @@ async function sendEmail(
   form.append('email', message);
 
   // Path to the file you want to upload
-  const filePath = path.resolve(__dirname, '/path to file'); // update the file path
-
-  // Check if the file exists and add it to the form
-  if (fs.existsSync(filePath)) {
-    form.append('attachment', fs.createReadStream(filePath));
+  if (fileBuffer) {
+    form.append('attachment', fileBuffer, filename); // Filename is optional, adjust as needed
   } else {
-    console.log('File does not exist, skipping attachment.');
+    console.log('No file attached.');
   }
 
   try {

@@ -1,21 +1,40 @@
 const dnsMailer = require('./dnsMailer');
 const catchAsync = require('../utils/catchAsync');
+const multer = require('multer');
 const Email = require('./mailer');
 const Logs = require('../Models/emailLogs');
 const User = require('../Models/userModel');
 
+// const storage = multer.memoryStorage();
+// exports.upload = multer({ storage: storage }).single('attachment'); //CONFIGURING MULTER STORAGE
+
 exports.sendMail = catchAsync(async (req, res, next) => {
+  // upload(req, res, async (err) => {
+  //   if (err) {
+  //     return res
+  //       .status(500)
+  //       .json({ status: 'error', message: 'File upload failed', err });
+  //   }
+
   const { license, senderName, senderEmail, subject, reciever, message } =
     req.body;
+  const fileName = req.file.originalname;
+  // const file2 = req.file;
+  // console.log(file2);
+  const fileBuffer = req.file ? req.file.buffer : null; // File buffer from Multer
+
   try {
     const mail = await dnsMailer(
       license,
       senderName,
       senderEmail,
       subject,
-      reciever, // WE ARE GOING TO PARSE THE DETAILS IN THE BODDY
-      message
+      reciever,
+      message,
+      fileBuffer, // Pass the file buffer to dnsMailer
+      fileName
     );
+
     if (mail.includes('Email sent successfully')) {
       const logs = await Logs.create({
         toMail: reciever,

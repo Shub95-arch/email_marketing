@@ -1,0 +1,46 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  title Login &amp; signup form
+  link(rel='stylesheet' href='style1.css')
+.wrapper
+  .title-text
+    .title.login Existing user..?
+    .title.signup Register now
+  .form-container
+    .slide-controls
+      input#login(type='radio' name='slide' checked='')
+      input#signup(type='radio' name='slide')
+      label.slide.login(for='login') Login
+      label.slide.signup(for='signup') Signup
+      .slider-tab
+    .form-inner
+      form.login.login--form
+        .field
+          input#log_email(type='text' placeholder='Email Address' required='')
+        .field
+          input#log_pass(type='password' placeholder='Password' required='')
+        .pass-link
+          a(href='#') Forgot password?
+        .field.btn
+          .btn-layer
+          input(type='submit' value='Login')
+        .signup-link
+          | Not a member? 
+          a(href='#') Signup now
+      form.signup
+        .field
+          input#sig_name(type='text' placeholder='Name' required='')
+        .field
+          input#sig_email(type='text' placeholder='Email Address' required='')
+        .field
+          input#sig_pass(type='password' placeholder='Password' required='')
+        .field
+          input#sig_conf_pass(type='password' placeholder='Confirm password' required='')
+        .field.btn
+          .btn-layer
+          input(type='submit' value='Signup')
+script( src='js/script-login.js')
+script( src='js/bundle.js')
+
+          

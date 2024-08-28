@@ -1,6 +1,7 @@
 const User = require('../Models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const Email_logs = require('../Models/emailLogs');
 
 const filterObj = (obj, ...allowedFileds) => {
   const newObj = {};
@@ -65,16 +66,23 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 
 exports.getUser = catchAsync(async (req, res, next) => {
   const currentUser = await User.findById(req.params.id).populate({
-    path: 'logs',
+    path: 'logs smtp',
     select: '-__v',
   });
   if (!currentUser)
-    return next(new AppError('No Tour found with that id', 404));
+    return next(new AppError('No User found with that id', 404));
   res.status(200).json({
     status: 'success',
     data: {
       currentUser,
     },
+  });
+});
+
+exports.getLogs = catchAsync(async (req, res, next) => {
+  const log = await Email_logs.find();
+  res.status(200).json({
+    log,
   });
 });
 

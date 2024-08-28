@@ -54,6 +54,14 @@ exports.signup = catchAsync(async (req, res, next) => {
   CreateSendToken(newUser, 201, res);
 });
 
+exports.logout = (req, res) => {
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: 'success' });
+};
+
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -109,5 +117,34 @@ exports.protect = catchAsync(async (req, res, next) => {
   next(); //GRANCT ACCESS TO PROTECTED ROUTE
 });
 
+exports.isLoggedIn = async (req, res, next) => {
+  if (req.cookies.jwt) {
+    try {
+      //1> Verify the jwt token stored in the cookie
+      const decoded = await util.promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.JWT_SECRET
+      );
+      //2> Check if the user still exists
+      const currentUser = await User.findById(decoded.id);
+      if (!currentUser) {
+        return next();
+      }
 
+      //3> Check if the user changed password after the token was issued
+      if (currentUser.changedPasswordAfter(decoded.iat)) {
+        return next();
+      }
 
+      //NOW IF ALL THE CHECKS ARE PERFORMED THEN THE USER IS LOGGED IN
+
+      res.locals.user = currentUser; // we can use this user variable everywhere as its local
+
+      return res.redirect('/');
+    } catch (err) {
+      return next();
+    }
+  }
+
+  next();
+};

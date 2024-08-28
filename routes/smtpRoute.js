@@ -5,7 +5,7 @@ const smtpController = require('../controller/smtpController');
 
 router
   .route('/')
-  .get(smtpController.getAllSmtp)
+  .get(authController.protect, smtpController.getAllSmtp)
   .post(authController.protect, smtpController.createSmtp);
 
 router

@@ -6,21 +6,7 @@ const Email = require('../mailer/mailer');
 
 exports.getAllSmtp = catchAsync(async (req, res, next) => {
   const smtp = await Smtp.find();
-  // const contact = { email: 'shubhamkr1188@gmail.com', name: 'John Doe' };
-  // console.log(contact.email);
-  // const fromMail = { name: 'secureNET', email: 'help@securenet.fun' };
-  // const smtpp = {
-  //   host: 'smtp.zoho.in',
-  //   port: '587',
-  //   username: 'help@securenet.fun',
-  //   password: '9gv-Ndoz',
-  // };
 
-  // await new Email(contact, smtpp, fromMail).send(
-  //   '<h1>This is a command heading tab </h1>',
-  //   'your account has been activated',
-  //   'external'
-  // );
   res.status(200).json({
     status: 'success',
     results: smtp.length,
