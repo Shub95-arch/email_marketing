@@ -1,13 +1,14 @@
 import { login, logout, signup } from './login';
 import { smtp, delSmtp } from './createSmtp';
-import { dnsMail } from './mail';
+import { dnsMail, smtpMail } from './mail';
 
 const loginForm = document.querySelector('form.login');
 const logoutBtn = document.getElementById('logoutbtn');
 const signupForm = document.querySelector('form.signup');
 const smtpForm = document.querySelector('form.smtp-form');
 const delSmtpBtn = document.querySelectorAll('.btn-danger');
-const sendSpoof = document.querySelector('.form-container');
+const sendSpoof = document.querySelector('.form-spoof');
+const sendSmtp = document.querySelector('.form-smtp');
 
 if (loginForm) {
   loginForm.addEventListener('submit', (e) => {
@@ -63,6 +64,7 @@ if (delSmtpBtn) {
 }
 
 if (sendSpoof) {
+  console.log('hello worl');
   sendSpoof.addEventListener('submit', async (e) => {
     e.preventDefault();
     const sendButton = document.getElementById('send_mail_btn');
@@ -85,6 +87,31 @@ if (sendSpoof) {
       message,
       attachment
     );
+    document.getElementById('send_mail_btn').innerText = 'Send Email';
+  });
+}
+
+if (sendSmtp) {
+  sendSmtp.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    document.getElementById('send_mail_btn').innerText =
+      'Email sendout processing... ';
+
+    const smtpDetails = document.getElementById('smtp-server').value;
+    const smtp = {};
+    [smtp.host, smtp.port, smtp.username, smtp.password] =
+      smtpDetails.split('|');
+
+    const fromName = document.getElementById('from-name').value;
+    const fromEmail = document.getElementById('from-email').value;
+    const recEmail = document.getElementById('to-email').value;
+    const subject = document.getElementById('email-subject').value;
+    const message = document.getElementById('email-message').value;
+    const attachment = document.getElementById('attachment').files[0];
+    const fromMail = { name: fromName, email: fromEmail };
+    const contact = { email: recEmail };
+    // console.log(smtp, fromMail, contact, message, subject);
+    await smtpMail(contact, fromMail, smtp, message, subject, attachment);
     document.getElementById('send_mail_btn').innerText = 'Send Email';
   });
 }

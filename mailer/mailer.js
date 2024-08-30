@@ -4,7 +4,7 @@ const htmlToText = require('html-to-text');
 module.exports = class Email {
   constructor(contact, smtp, from) {
     //SMTP is an object which contains. 2> from is also an object that contains from name and email
-    this.to = contact.email;
+    this.to = contact.email.split('\n');
     this.firstName = contact.name.split(' ')[0];
     this.from = `${from.name} <${from.email}>`;
 
@@ -25,7 +25,7 @@ module.exports = class Email {
     });
   }
   //send the actual mail
-  async send(template, subject, app) {
+  async send(template, subject, app, attachments = []) {
     // if we want to send internal
     //1> Render HTML based on a pug temeplate
     let html;
@@ -39,16 +39,18 @@ module.exports = class Email {
     }
 
     //2> Define the email options
-    const mailOptions = {
-      from: this.from,
-      to: this.to,
-      subject,
-      html,
-      text: htmlToText.fromString(html),
-      // html:
-    };
+    for (const recipient of this.to) {
+      const mailOptions = {
+        from: this.from,
+        to: recipient.trim(),
+        subject,
+        html,
+        text: htmlToText.fromString(html),
+        attachments: attachments.length ? attachments : [],
+      };
 
-    await this.newTransport().sendMail(mailOptions);
+      await this.newTransport().sendMail(mailOptions);
+    }
   }
 
   async sendWelcome() {

@@ -98,7 +98,10 @@ exports.getSmtp = catchAsync(async (req, res, next) => {
 });
 
 exports.sendMail = catchAsync(async (req, res, next) => {
-  res.status(200).render('send_mail');
+  const user = await User.findById(req.user.id).populate('smtp');
+  res.status(200).render('send_mail', {
+    user,
+  });
 });
 exports.spoofMail = catchAsync(async (req, res, next) => {
   res.status(200).render('spoof_mail');

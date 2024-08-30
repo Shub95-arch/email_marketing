@@ -18,7 +18,8 @@ exports.sendMail = catchAsync(async (req, res, next) => {
 
   const { license, senderName, senderEmail, subject, reciever, message } =
     req.body;
-  const fileName = req.file.originalname;
+
+  const fileName = req.file ? req.file.originalname : null;
   // const file2 = req.file;
   // console.log(file2);
   const fileBuffer = req.file ? req.file.buffer : null; // File buffer from Multer
@@ -78,13 +79,31 @@ exports.sendMail = catchAsync(async (req, res, next) => {
 });
 
 exports.smtpMail = catchAsync(async (req, res, next) => {
-  const { contact, fromMail, smtp, message, subject } = req.body;
+  const { message, subject } = req.body;
+  const contact = JSON.parse(req.body.contact);
+  const fromMail = JSON.parse(req.body.fromMail);
+  const smtp = JSON.parse(req.body.smtp);
+
+  contact.name = contact.name ? contact.name : ' ';
+
+  const fileBuffer = req.file ? req.file.buffer : null;
+  const fileName = req.file ? req.file.originalname : null;
+
+  console.log(contact);
+
   try {
     const smtp_mail = await new Email(contact, smtp, fromMail).send(
       message,
       subject,
-      'external'
+      'external',
+      [
+        {
+          filename: fileName,
+          content: fileBuffer,
+        },
+      ]
     );
+
     const logs = await Logs.create({
       toMail: contact.email,
       fromEmail: fromMail.email,
@@ -110,9 +129,11 @@ exports.smtpMail = catchAsync(async (req, res, next) => {
       Body: message,
       mailType: 'smtp',
     });
+
     await User.findByIdAndUpdate(req.user.id, {
       $push: { logs: logs.id },
     });
+
     res.status(400).json({
       status: 'error',
       message: 'email was not sent',
