@@ -341,6 +341,38 @@ tbody tr:nth-child(even) {
   align-items: center;
   margin-bottom: 0.3rem;
 }
+.pagination-box {
+  display: flex;
+  justify-content: center; /* Center the buttons horizontally */
+  margin-top: 20px; /* Adjust spacing from content above */
+  position: relative;
+  bottom: 30px; /* Adjust spacing from bottom */
+}
+
+.pagination-buttons {
+  display: flex;
+  gap: 15px; /* Reduced gap between buttons */
+}
+
+.pagination-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px; /* Smaller padding for smaller buttons */
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px; /* Smaller font size */
+  transition: background-color 0.3s;
+}
+
+.pagination-btn:hover {
+  background-color: #0056b3;
+}
+
+.pagination-gap {
+  display: inline-block;
+  width: 15px; /* Adjusted gap width */
+}
 
 .bday-card {
   padding: 1rem;

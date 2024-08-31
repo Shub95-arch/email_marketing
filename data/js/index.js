@@ -1,6 +1,7 @@
 import { login, logout, signup } from './login';
 import { smtp, delSmtp } from './createSmtp';
 import { dnsMail, smtpMail } from './mail';
+import { updateData } from './updateProfile';
 
 const loginForm = document.querySelector('form.login');
 const logoutBtn = document.getElementById('logoutbtn');
@@ -9,6 +10,10 @@ const smtpForm = document.querySelector('form.smtp-form');
 const delSmtpBtn = document.querySelectorAll('.btn-danger');
 const sendSpoof = document.querySelector('.form-spoof');
 const sendSmtp = document.querySelector('.form-smtp');
+const nextBtn = document.getElementById('next-btn');
+const prevBtn = document.getElementById('prev-btn');
+const profilePage = document.getElementById('profile-change-form');
+const passChangeForm = document.getElementById('password-change-form');
 
 if (loginForm) {
   loginForm.addEventListener('submit', (e) => {
@@ -113,5 +118,65 @@ if (sendSmtp) {
     // console.log(smtp, fromMail, contact, message, subject);
     await smtpMail(contact, fromMail, smtp, message, subject, attachment);
     document.getElementById('send_mail_btn').innerText = 'Send Email';
+  });
+}
+
+if (nextBtn) {
+  nextBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(window.location.search);
+    console.log('hello boss');
+    console.log(urlParams);
+    const currentPage = parseInt(urlParams.get('page')) || 1;
+
+    const nextPage = currentPage + 1;
+    urlParams.set('page', nextPage);
+
+    // Redirect to the updated URL
+    window.location.search = urlParams.toString();
+  });
+}
+
+if (prevBtn) {
+  prevBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(window.location.search);
+    console.log('hello boss');
+    console.log(urlParams);
+    const currentPage = parseInt(urlParams.get('page')) || 1;
+
+    const prevPage = Math.max(currentPage - 1, 1);
+    urlParams.set('page', prevPage);
+
+    // Redirect to the updated URL
+    window.location.search = urlParams.toString();
+  });
+}
+
+if (profilePage) {
+  profilePage.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const form = new FormData();
+    form.append('name', document.getElementById('name').value);
+    // form.append('email', document.getElementById('email').value);
+    // form.append('photo', document.getElementById('photo').files[0]);
+    console.log(form);
+    updateData(form, 'data');
+  });
+}
+
+if (passChangeForm) {
+  passChangeForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const passwordCurrent = document.getElementById('current-password').value;
+    const password = document.getElementById('new-password').value;
+    const passwordConfirm = document.getElementById('confirm-password').value;
+    await updateData(
+      { passwordCurrent, password, passwordConfirm },
+      'password'
+    );
+    document.getElementById('current-password').value = '';
+    document.getElementById('new-password').value = '';
+    document.getElementById('confirm-password').value = '';
   });
 }

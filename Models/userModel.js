@@ -27,6 +27,20 @@ const userSchema = new mongoose.Schema({
       ref: 'Email_logs',
     },
   ],
+  renewalDate: {
+    type: Date,
+    required: true,
+    default: new Date(),
+  },
+  durationDays: {
+    type: Number,
+    required: true,
+    default: 7,
+  },
+  emailLimit: {
+    type: Number,
+    default: 0,
+  },
   photo: {
     type: String,
     default: 'default.jpg',
@@ -62,6 +76,8 @@ const userSchema = new mongoose.Schema({
     select: false,
   },
 });
+
+// userSchema.index({ renewalDate: 1 });
 
 userSchema.pre(
   'save',

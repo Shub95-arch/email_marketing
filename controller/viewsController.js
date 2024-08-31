@@ -7,9 +7,17 @@ exports.getOverview = catchAsync(async (req, res, next) => {
 });
 
 exports.getActivity = catchAsync(async (req, res, next) => {
+  const { page = 1, limit = 10 } = req.query;
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Set the time to the start of the day
-  const user = await User.findById(req.user.id).populate('logs');
+  const user = await User.findById(req.user.id).populate({
+    path: 'logs',
+    options: {
+      skip: (page - 1) * limit,
+      limit: parseInt(limit),
+      sort: { sentOn: -1 },
+    },
+  });
 
   const logs = await User.aggregate([
     {
@@ -78,11 +86,11 @@ exports.getActivity = catchAsync(async (req, res, next) => {
       },
     },
   ]);
-  console.log(logs);
+  // console.log('hrllo', logs);
 
   res.status(200).render('index', {
     user,
-    logs: logs[0], // logs[0] because the aggregation results in an array
+    logs: logs[0] || [], // logs[0] because the aggregation results in an array
   });
 });
 
@@ -91,7 +99,15 @@ exports.getAccount = catchAsync(async (req, res, next) => {
 });
 
 exports.getSmtp = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.user.id).populate('smtp');
+  const { page = 1, limit = 10 } = req.query;
+  const user = await User.findById(req.user.id).populate({
+    path: 'smtp',
+    options: {
+      skip: (page - 1) * limit,
+      limit: parseInt(limit),
+      sort: { sentOn: -1 },
+    },
+  });
   res.status(200).render('smtp', {
     user,
   });

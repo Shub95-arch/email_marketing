@@ -44,7 +44,6 @@ exports.signup = catchAsync(async (req, res, next) => {
       email: req.body.email, // WE can also pass req.body but for security we will only pass selected terms
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
-      passwordChangedAT: req.body.passwordChangedAT,
     });
   } else {
     newUser = await User.create(req.body);
@@ -148,3 +147,41 @@ exports.isLoggedIn = async (req, res, next) => {
 
   next();
 };
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  //1> Get user from the collection
+  const user = await User.findById(req.user.id).select('+password');
+  //2> Check if the posted password is correct
+
+  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+    // we will pass passwordCurrent in the req.body
+
+    return next(new AppError('Your current password is wrong', 401));
+  }
+
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  await user.save();
+  //3> If so, update the password
+
+  //4> Log the user in with JWT
+  CreateSendToken(user, 200, res);
+});
+
+exports.checkExpire = catchAsync(async (req, res, next) => {
+  //check for expiration date
+  const user = await User.findById(req.user.id);
+  expirationDate = new Date(user.renewalDate);
+  expirationDate.setDate(expirationDate.getDate() + user.durationDays);
+
+  //check for credits
+
+  if (new Date() > expirationDate) {
+    return next(new AppError('License Expired', 400));
+  }
+
+  if (user.emailLimit === 0) {
+    return next(new AppError('Balance Empty', 400));
+  }
+  next();
+});

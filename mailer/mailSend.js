@@ -9,6 +9,7 @@ const User = require('../Models/userModel');
 // exports.upload = multer({ storage: storage }).single('attachment'); //CONFIGURING MULTER STORAGE
 
 exports.sendMail = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
   // upload(req, res, async (err) => {
   //   if (err) {
   //     return res
@@ -37,6 +38,13 @@ exports.sendMail = catchAsync(async (req, res, next) => {
     );
 
     if (mail.includes('Email sent successfully')) {
+      //decrement the credits
+      if (user.emailLimit > 0) {
+        user.emailLimit -= 1;
+        await user.save({ validateBeforeSave: false });
+      }
+
+      //make the logs for success
       const logs = await Logs.create({
         toMail: reciever,
         fromEmail: senderEmail,
@@ -89,8 +97,6 @@ exports.smtpMail = catchAsync(async (req, res, next) => {
   const fileBuffer = req.file ? req.file.buffer : null;
   const fileName = req.file ? req.file.originalname : null;
 
-  console.log(contact);
-
   try {
     const smtp_mail = await new Email(contact, smtp, fromMail).send(
       message,
@@ -103,36 +109,44 @@ exports.smtpMail = catchAsync(async (req, res, next) => {
         },
       ]
     );
+    console.log(contact.email.split('\n'));
+    const emails = contact.email.split('\n');
 
-    const logs = await Logs.create({
-      toMail: contact.email,
-      fromEmail: fromMail.email,
-      status: 'success',
-      subject,
-      Body: message,
-      mailType: 'smtp',
-    });
-    await User.findByIdAndUpdate(req.user.id, {
-      $push: { logs: logs.id },
-    });
+    for (const el of emails) {
+      const logs = await Logs.create({
+        toMail: el.trim(),
+        fromEmail: fromMail.email,
+        status: 'success',
+        subject,
+        Body: message,
+        mailType: 'smtp',
+      });
+
+      await User.findByIdAndUpdate(req.user.id, {
+        $push: { logs: logs.id },
+      });
+    }
+
     res.status(200).json({
       status: 'success',
       message: 'email sent successfully',
-      data: logs,
     });
   } catch (err) {
-    const logs = await Logs.create({
-      toMail: contact.email,
-      fromEmail: fromMail.email,
-      status: 'failed',
-      subject,
-      Body: message,
-      mailType: 'smtp',
-    });
+    const emails = contact.email.split('\n');
+    for (const el of emails) {
+      const logs = await Logs.create({
+        toMail: el.trim(),
+        fromEmail: fromMail.email,
+        status: 'failed',
+        subject,
+        Body: message,
+        mailType: 'smtp',
+      });
 
-    await User.findByIdAndUpdate(req.user.id, {
-      $push: { logs: logs.id },
-    });
+      await User.findByIdAndUpdate(req.user.id, {
+        $push: { logs: logs.id },
+      });
+    }
 
     res.status(400).json({
       status: 'error',

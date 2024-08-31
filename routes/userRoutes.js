@@ -8,8 +8,22 @@ router.post('/signup', authController.signup);
 router.get('/logout', authController.logout);
 router.get('/logs', userController.getLogs);
 
+router.use(authController.protect); // this will run this middle ware that comes after this point
+
+router.patch(
+  '/updateMe',
+  userController.uploadUserPhoto,
+  userController.resizeUserPhoto,
+  userController.updateMe
+);
+
+router.patch('/updateMyPassword', authController.updatePassword);
+
 router.route('/').get(userController.getAllUsers); // this will be later restricted to only admin
-router.route('/:id').get(userController.getUser);
+router
+  .route('/:id')
+  .get(userController.getUser)
+  .patch(userController.updateUser);
 
 router.get(
   '/me',

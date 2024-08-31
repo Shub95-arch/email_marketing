@@ -2,22 +2,25 @@ extends base
 
 block content
     main
-        h2.dash-title Account Settings
+        // Box with outlined border for Profile Settings
+        .profile-settings-box
+            h2.dash-title Profile Settings
+
         .account-forms
             .form-card
                 h3 Change Name &amp; Email
-                form
+                form#profile-change-form
                     .input-group
                         label(for='name') Name
-                        input#name(type='text' name='name' placeholder='Enter your name')
+                        input#name(type='text' name='name' value=`${user.name}` placeholder=`${user.name}`)
                     .input-group
                         label(for='email') Email
-                        input#email(type='email' name='email' placeholder='Enter your email')
+                        input#email(type='email' name='email' value=`${user.email}` placeholder=`${user.email}`)
                     .form-actions
                         button(type='submit') Update Info
             .form-card
                 h3 Change Password
-                form
+                form#password-change-form
                     .input-group
                         label(for='current-password') Current Password
                         input#current-password(type='password' name='current-password' placeholder='Enter current password')

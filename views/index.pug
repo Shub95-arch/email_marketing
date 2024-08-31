@@ -9,15 +9,17 @@ block content
                         span.ti-briefcase
                         div
                             h5 Account Balance
-                            h4 #{user.name.split(' ')[0]}
+                            h4 #{user.emailLimit}
                     .card-footer
                         a(href='') View all
                 .card-single
                     .card-body
                         span.ti-reload
                         div
-                            h5 Days Remaining
-                            h4 $19,500.45
+                            h5 Expiration
+                            -expirationDate = new Date(user.renewalDate);
+                            -expirationDate.setDate(expirationDate.getDate() + user.durationDays);
+                            h4=`${expirationDate}`
                     .card-footer
                         a(href='') View all
                 .card-single
@@ -25,7 +27,7 @@ block content
                         span.ti-check-box
                         div
                             h5 Account Status
-                            h4 $20,659
+                            h4=`${new Date()>expirationDate?'Expired':'Active'}`
                     .card-footer
                         a(href='') View all
             section.recent
@@ -45,7 +47,7 @@ block content
                                 tbody
                                     each log in user.logs
                                         tr
-                                            td #{log.Body.substr(0,35)+' ...'}
+                                            td #{log.Body.substr(0,35)+'...'}
                                             td #{log.sentOn}
                                             td #{log.toMail}
                                             td #{log.fromEmail}
@@ -62,25 +64,39 @@ block content
                             .summary-single
                                 span.ti-id-badge
                                 div
-                                    h5 #{logs.totalMailCount} : #{logs.todayCount} 
-                                    small Total Mails : Mails sent Today
+                                    h5 #{logs.totalMailCount || 'No Data'}
+                                    small Total Mails
                             .summary-single
                                 span.ti-calendar
                                 div
-                                    h5 #{logs.spoofCount} : #{logs.smtpCount}
+                                    h5 #{logs.spoofCount|| 'No Data'} : #{logs.smtpCount|| 'No Data'}
                                     small Spoof : Smtp 
                             .summary-single
                                 span.ti-face-smile
                                 div
-                                    h5 #{logs.successCount} : #{logs.failedCount}
+                                    h5 #{logs.successCount|| 'No Data'} : #{logs.failedCount|| 'No Data'}
                                     small Success : Failed
                         .bday-card
                             .bday-flex
                                 .bday-img
                                 .bday-info
-                                    h5 Dwayne F. Sanders
-                                    small Birthday Today
+                                    h5 #{user.name.split(' ')[0]}
+                                    small Mails sent Today
                             .text-center
                                 button
                                     span.ti-gift
-                                    |                     Wish him
+                                    |                     #{logs.todayCount|| 'No Data'} 
+                                
+            // Pagination Controls
+        .pagination-box
+            .pagination
+                // Container for pagination buttons
+                .pagination-buttons
+                    // Previous Button
+                    a.pagination-btn#prev-btn(href=`/activity?page=${prevPage}&limit=${limit}`) Previous
+
+                    // Gap between buttons
+                    span.pagination-gap
+
+                    // Next Button
+                    a.pagination-btn#next-btn(href=`/activity?page=${nextPage}&limit=${limit}`) Next

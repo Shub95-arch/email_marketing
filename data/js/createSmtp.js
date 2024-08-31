@@ -29,7 +29,7 @@ export const delSmtp = async (id) => {
       url: `http://127.0.0.1:3001/api/v1/smtp/${id}`,
     });
 
-    show_alert('success', 'Smtp Deleted');
+    show_alert('success', 'Smtp deleted');
     location.reload(true);
   } catch (err) {
     show_alert('error', err);

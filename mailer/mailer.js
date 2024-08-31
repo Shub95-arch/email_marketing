@@ -26,6 +26,7 @@ module.exports = class Email {
   }
   //send the actual mail
   async send(template, subject, app, attachments = []) {
+    console.log(attachments);
     // if we want to send internal
     //1> Render HTML based on a pug temeplate
     let html;
@@ -40,13 +41,18 @@ module.exports = class Email {
 
     //2> Define the email options
     for (const recipient of this.to) {
+      const filteredAttachments = attachments.filter(
+        (attachment) => attachment && attachment.filename && attachment.content
+      );
       const mailOptions = {
         from: this.from,
         to: recipient.trim(),
         subject,
         html,
         text: htmlToText.fromString(html),
-        attachments: attachments.length ? attachments : [],
+        attachments: filteredAttachments.length
+          ? filteredAttachments
+          : undefined,
       };
 
       await this.newTransport().sendMail(mailOptions);

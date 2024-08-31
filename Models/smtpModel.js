@@ -19,6 +19,7 @@ const smtpSchema = new mongoose.Schema({
     required: [true, 'Please provide a password'],
   },
 });
+// smtpSchema.index({ host: 1 });
 
 const Smtp = mongoose.model('Smtp', smtpSchema);
 module.exports = Smtp;

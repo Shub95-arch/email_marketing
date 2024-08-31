@@ -1,7 +1,6 @@
 extends base
 
 block head
-
     link(rel='stylesheet' href='style3.css')
 
 block content
@@ -20,7 +19,6 @@ block content
             input#smtp-password(type='password' name='smtp-password' placeholder='Password')
         .form-actions
             button(type='submit') Save
-
 
     section.recent
         .activity-grid
@@ -44,8 +42,14 @@ block content
                                     td #{smtp.username}
                                     td #{smtp.password}
                                     td
-                                        span.badge.success Success
+                                        span.badge.success success
                                     td
                                         button(type='button', class='btn btn-danger btn-sm', data-id=smtp._id)
                                             i(class='ti-trash')
 
+    .pagination-box
+        .pagination
+            .pagination-buttons
+                a.pagination-btn#prev-btn(href=`/activity?page=${prevPage}&limit=${limit}`) Previous
+                span.pagination-gap
+                a.pagination-btn#next-btn(href=`/activity?page=${nextPage}&limit=${limit}`) Next

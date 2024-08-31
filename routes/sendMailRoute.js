@@ -9,7 +9,12 @@ const upload = multer({ storage: storage });
 
 router.use(authController.protect);
 
-router.post('/send', upload.single('attachment'), mailController.sendMail);
+router.post(
+  '/send',
+  authController.checkExpire,
+  upload.single('attachment'),
+  mailController.sendMail
+);
 router.post('/send-smtp', upload.single('attachment'), mailController.smtpMail);
 
 module.exports = router;

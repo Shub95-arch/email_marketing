@@ -25,6 +25,7 @@ const logSchema = new mongoose.Schema({
     enum: ['smtp', 'spoof'],
   },
 });
+// logSchema.index({ sentOn: 1 });
 
 const email_logs = mongoose.model('Email_logs', logSchema);
 module.exports = email_logs;
