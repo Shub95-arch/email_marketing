@@ -52,6 +52,21 @@
   color: #fff;
   font-size: 0.8rem;
 }
+/* Add this to your existing style.css file */
+/* Default tab style */
+.sidebar-menu ul li a {
+  /* Default background color */
+  color: #fff; /* Default text color */
+  transition: background-color 0.3s ease, border-bottom 0.3s ease;
+  text-decoration: none; /* Remove default underline */
+  padding-bottom: 5px; /* Add some padding to make room for the underline */
+}
+
+/* Active tab style */
+.sidebar-menu ul li a.active {
+  color: #fff; /* Active tab text color */
+  border-bottom: 2px solid #fff; /* White underline */
+}
 
 .sidebar a span:last-child {
   padding-left: 0.6rem;

@@ -3,14 +3,16 @@ const router = express.Router();
 const authController = require('../controller/authController');
 const smtpController = require('../controller/smtpController');
 
+router.use(authController.protect);
+
 router
   .route('/')
-  .get(authController.protect, smtpController.getAllSmtp)
-  .post(authController.protect, smtpController.createSmtp);
+  .get(authController.restrictTo('admin'), smtpController.getAllSmtp)
+  .post(smtpController.createSmtp);
 
 router
   .route('/:id')
-  .get(smtpController.getSmtp)
+  .get(authController.restrictTo('admin'), smtpController.getSmtp)
   .patch(smtpController.updateSmtp)
   .delete(smtpController.deleteSmtp);
 

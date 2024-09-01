@@ -1,46 +1,74 @@
 doctype html
 head
   meta(charset='UTF-8')
-  title Login &amp; signup form
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(rel='icon' href='img/logo.ico' type='image/icon type')
+  title secureNET | Login
   link(rel='stylesheet' href='style1.css')
-.wrapper
-  .title-text
-    .title.login Existing user..?
-    .title.signup Register now
-  .form-container
-    .slide-controls
-      input#login(type='radio' name='slide' checked='')
-      input#signup(type='radio' name='slide')
-      label.slide.login(for='login') Login
-      label.slide.signup(for='signup') Signup
-      .slider-tab
-    .form-inner
-      form.login.login--form
-        .field
-          input#log_email(type='text' placeholder='Email Address' required='')
-        .field
-          input#log_pass(type='password' placeholder='Password' required='')
-        .pass-link
-          a(href='#') Forgot password?
-        .field.btn
-          .btn-layer
-          input(type='submit' value='Login')
-        .signup-link
-          | Not a member? 
-          a(href='#') Signup now
-      form.signup
-        .field
-          input#sig_name(type='text' placeholder='Name' required='')
-        .field
-          input#sig_email(type='text' placeholder='Email Address' required='')
-        .field
-          input#sig_pass(type='password' placeholder='Password' required='')
-        .field
-          input#sig_conf_pass(type='password' placeholder='Confirm password' required='')
-        .field.btn
-          .btn-layer
-          input(type='submit' value='Signup')
-script( src='js/script-login.js')
+main
+  .box
+    .inner-box
+      .forms-wrap
+        form.sign-in-form
+          .logo
+            img(src='img/new_logo.png' alt='secureNET')
+          .heading
+            h2 Welcome Back
+            h6 Not registred yet?  
+            a.toggle(href='#') Sign up
+          .actual-form
+            .input-wrap
+              input.input-field#log_email(type='email' minlength='4'  required='')
+              label Email
+            .input-wrap
+              input.input-field#log_pass(type='password' minlength='4'  required='')
+              label Password
+            input.sign-btn#sign-in-btn(type='submit' value='Sign In')
+            p.text
+              | Forgotten your password or you login datails?
+              a(href='#') Get help
+              |  signing in
+        form.sign-up-form
+          .logo
+            img(src='./img/new_logo.png' alt='secureNET')
+          .heading
+            h2 Get Started
+            h6 Already have an account?  
+            a.toggle(href='#') Sign in
+          .actual-form
+            .input-wrap
+              input.input-field#sig_name(type='text' minlength='4'  required='')
+              label Name
+            .input-wrap
+              input.input-field#sig_email(type='email'  required='')
+              label Email
+            .input-wrap
+              input.input-field#sig_pass(type='password'  required='')
+              label Password
+            .input-wrap
+              input.input-field#sig_conf_pass(type='password' minlength='4' required='')
+              label Confirm Password
+            input.sign-btn#sign-up-btn(type='submit' value='Sign Up')
+            p.text
+              | By signing up, I agree to the
+              a(href='#') Terms of Services
+              |  and
+              a(href='#') Privacy Policy
+      .carousel
+        .images-wrapper
+          img.image.img-1.show(src='img/image1.png' alt='')
+          img.image.img-2(src='img/image2.png' alt='')
+          img.image.img-3(src='img/image3.png' alt='')
+        .text-slider
+          .text-wrap
+            .text-group
+              h2 Effortless email campaigns
+              h2 Power your outreach with precision
+              h2 Your message, our mission
+          .bullets
+            span.active(data-value='1')
+            span(data-value='2')
+            span(data-value='3')
+script(src='js/script-login.js')
 script( src='js/bundle.js')
-
-          

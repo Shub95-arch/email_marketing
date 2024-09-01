@@ -35,7 +35,7 @@ body {
   left: 0;
   width: 100%;
   height: 5px;
-  background: linear-gradient(45deg, #007bff, #00c6ff);
+  background: linear-gradient(45deg, #162436, #162436);
   border-radius: 12px 12px 0 0;
   transition: height 0.3s ease;
 }
@@ -48,7 +48,7 @@ body {
 .form-card h3 {
   margin-bottom: 20px;
   font-size: 20px;
-  color: #007bff;
+  color: #4541b6;
   text-transform: uppercase;
   letter-spacing: 1px;
   position: relative;
@@ -94,12 +94,14 @@ body {
 
 .form-actions button {
   padding: 12px 30px;
-  background-color: #007bff;
+  background-color: #4541b6;
   color: #fff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 15px;
+  position: relative;
+  z-index: 1;
   transition: background-color 0.3s ease, transform 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;

@@ -6,30 +6,27 @@ block content
             .dash-cards
                 .card-single
                     .card-body
-                        span.ti-briefcase
+                        span.ti-wallet
                         div
                             h5 Account Balance
-                            h4 #{user.emailLimit}
-                    .card-footer
-                        a(href='') View all
+                            h4 $ #{user.emailLimit}
+                                            
                 .card-single
                     .card-body
-                        span.ti-reload
+                        span.ti-calendar
                         div
                             h5 Expiration
                             -expirationDate = new Date(user.renewalDate);
                             -expirationDate.setDate(expirationDate.getDate() + user.durationDays);
                             h4=`${expirationDate}`
-                    .card-footer
-                        a(href='') View all
+                                            
                 .card-single
                     .card-body
-                        span.ti-check-box
+                        span.ti-power-off
                         div
                             h5 Account Status
                             h4=`${new Date()>expirationDate?'Expired':'Active'}`
-                    .card-footer
-                        a(href='') View all
+                                            
             section.recent
                 .activity-grid
                     .activity-card
@@ -62,29 +59,29 @@ block content
                     .summary
                         .summary-card
                             .summary-single
-                                span.ti-id-badge
+                                span.ti-bookmark-alt
                                 div
                                     h5 #{logs.totalMailCount || 'No Data'}
                                     small Total Mails
                             .summary-single
-                                span.ti-calendar
+                                span.ti-medall-alt
                                 div
                                     h5 #{logs.spoofCount|| 'No Data'} : #{logs.smtpCount|| 'No Data'}
                                     small Spoof : Smtp 
                             .summary-single
-                                span.ti-face-smile
+                                span.ti-stats-up
                                 div
                                     h5 #{logs.successCount|| 'No Data'} : #{logs.failedCount|| 'No Data'}
                                     small Success : Failed
                         .bday-card
                             .bday-flex
-                                .bday-img
+                                
                                 .bday-info
-                                    h5 #{user.name.split(' ')[0]}
-                                    small Mails sent Today
-                            .text-center
-                                button
-                                    span.ti-gift
+                                    h4 Mails sent Today
+                                    
+                            .text-center(style='text-align:left;padding-top:1rem')
+                                button(style='font-size: medium')
+                                    
                                     |                     #{logs.todayCount|| 'No Data'} 
                                 
             // Pagination Controls

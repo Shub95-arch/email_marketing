@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' });
+const Email = require('../mailer/mailer');
 
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
@@ -36,18 +37,84 @@ const CreateSendToken = (user, statusCode, res) => {
   });
 };
 
-exports.signup = catchAsync(async (req, res, next) => {
-  let newUser;
-  if (process.env.NODE_ENV == 'production') {
-    newUser = await User.create({
-      name: req.body.name,
-      email: req.body.email, // WE can also pass req.body but for security we will only pass selected terms
-      password: req.body.password,
-      passwordConfirm: req.body.passwordConfirm,
-    });
-  } else {
-    newUser = await User.create(req.body);
+//PRE-SIGNUP to generate OTP for email verification
+exports.preSignup = catchAsync(async (req, res, next) => {
+  const { name, email, password, passwordConfirm } = req.body;
+  if (password != passwordConfirm) {
+    return next(new AppError('Password do not match'));
   }
+
+  // Generate OTP
+  const otp = crypto.randomBytes(3).toString('hex'); // 6-digit OTP
+  const otpExpires = Date.now() + 10 * 60 * 1000; // OTP valid for 10 minutes
+
+  // Store user details and OTP in session or cache
+  req.session.preSignup = {
+    name,
+    email,
+    password,
+    passwordConfirm,
+    otp,
+    otpExpires,
+  };
+
+  // Send OTP email
+  const contact = { email, name };
+  // console.log(contact.email);
+  const fromMail = { name: 'secureNET', email: process.env.SMTP_FROM };
+  const smtpp = {
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    username: process.env.SMTP_USERNAME,
+    password: process.env.SMTP_PASSWORD,
+  };
+
+  // console.log(otp);
+  await new Email(contact, smtpp, fromMail).sendVerify(otp);
+
+  res.status(200).json({
+    status: 'success',
+    message: 'OTP sent to your email.',
+  });
+});
+
+exports.signup = catchAsync(async (req, res, next) => {
+  const { otp } = req.body;
+  // console.log(otp);
+  const {
+    name,
+    email,
+    password,
+    passwordConfirm,
+    otp: storedOtp,
+    otpExpires,
+  } = req.session.preSignup || {};
+
+  if (!storedOtp || otp !== storedOtp || Date.now() > otpExpires) {
+    return next(new AppError('OTP is invalid or has expired', 400));
+  }
+
+  const newUser = await User.create({
+    name,
+    email, // WE can also pass req.body but for security we will only pass selected terms
+    password,
+    passwordConfirm,
+  });
+
+  //Sending a welcome email here
+  const contact = { email, name };
+  const fromMail = { name: 'secureNET', email: process.env.SMTP_FROM };
+  const smtpp = {
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    username: process.env.SMTP_USERNAME,
+    password: process.env.SMTP_PASSWORD,
+  };
+
+  await new Email(contact, smtpp, fromMail).sendWelcome(otp);
+
+  req.session.preSignup = null; //CLEARING UP THE SESSION
+
   // we need to apply a welcome email here LATER
 
   CreateSendToken(newUser, 201, res);
@@ -63,17 +130,31 @@ exports.logout = (req, res) => {
 
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
+  // console.log(email, password);
   if (!email || !password) {
     return next(new AppError('Please provide an email or password', 400));
   }
   const user = await User.findOne({ email }).select('+password');
-  console.log(user);
-  console.log(await user.correctPassword(password, user.password));
+
+  // if (!user) return next(new AppError('Incorrect email or passsword', 401));
+
   if (!user || !(await user.correctPassword(password, user.password)))
     return next(new AppError('Incorrect email or passsword', 401));
 
   CreateSendToken(user, 200, res);
 });
+
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    //roles is an array ['admin','lead-guide']  role is now just user role='user'
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError('You do not have permission to perform this action', 403)
+      );
+    }
+    next();
+  };
+};
 
 exports.protect = catchAsync(async (req, res, next) => {
   //1> Checking if the token exists
@@ -139,7 +220,7 @@ exports.isLoggedIn = async (req, res, next) => {
 
       res.locals.user = currentUser; // we can use this user variable everywhere as its local
 
-      return res.redirect('/');
+      return res.redirect('/activity');
     } catch (err) {
       return next();
     }

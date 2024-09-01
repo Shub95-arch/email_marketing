@@ -23,7 +23,7 @@ export const dnsMail = async (
     console.log(formData);
     const res = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3001/api/v1/mail/send',
+      url: '/api/v1/mail/send',
       data: formData,
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -59,7 +59,7 @@ export const smtpMail = async (
 
     const res = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3001/api/v1/mail/send-smtp',
+      url: '/api/v1/mail/send-smtp',
       data: formData,
       headers: {
         'Content-Type': 'multipart/form-data',

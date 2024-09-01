@@ -1,11 +1,12 @@
-import { login, logout, signup } from './login';
+import { login, logout, signup, verify } from './login';
 import { smtp, delSmtp } from './createSmtp';
 import { dnsMail, smtpMail } from './mail';
 import { updateData } from './updateProfile';
 
-const loginForm = document.querySelector('form.login');
+const loginForm = document.querySelector('form.sign-in-form');
+const verifyForm = document.querySelector('form.sign-otp-form');
 const logoutBtn = document.getElementById('logoutbtn');
-const signupForm = document.querySelector('form.signup');
+const signupForm = document.querySelector('form.sign-up-form');
 const smtpForm = document.querySelector('form.smtp-form');
 const delSmtpBtn = document.querySelectorAll('.btn-danger');
 const sendSpoof = document.querySelector('.form-spoof');
@@ -16,12 +17,25 @@ const profilePage = document.getElementById('profile-change-form');
 const passChangeForm = document.getElementById('password-change-form');
 
 if (loginForm) {
-  loginForm.addEventListener('submit', (e) => {
+  // console.log('hello trigger');
+  loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    document.getElementById('sign-in-btn').value = 'Logging In..';
     const email = document.getElementById('log_email').value;
     const password = document.getElementById('log_pass').value;
-    console.log(email, password);
-    login(email, password);
+    // console.log(email, password);
+    await login(email, password);
+    document.getElementById('sign-in-btn').value = 'Sign In';
+  });
+}
+
+if (verifyForm) {
+  verifyForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    document.getElementById('sign-btn').value = 'Verifying';
+    const code = document.getElementById('code_verify').value;
+    await verify(code);
+    document.getElementById('sign-btn').value = 'Sign In';
   });
 }
 
@@ -30,14 +44,16 @@ if (logoutBtn) {
 }
 
 if (signupForm) {
-  signupForm.addEventListener('submit', (e) => {
+  signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    document.getElementById('sign-up-btn').value = 'Signing Up..';
     const name = document.getElementById('sig_name').value;
     const email = document.getElementById('sig_email').value;
     const password = document.getElementById('sig_pass').value;
     const passwordConf = document.getElementById('sig_conf_pass').value;
-    console.log(email, password);
-    signup(name, email, password, passwordConf);
+    // console.log(email, password);
+    await signup(name, email, password, passwordConf);
+    document.getElementById('sign-up-btn').value = 'Sign Up';
   });
 }
 
@@ -158,8 +174,8 @@ if (profilePage) {
     e.preventDefault();
     const form = new FormData();
     form.append('name', document.getElementById('name').value);
-    // form.append('email', document.getElementById('email').value);
-    // form.append('photo', document.getElementById('photo').files[0]);
+    form.append('email', document.getElementById('email').value);
+    form.append('photo', document.getElementById('photo').files[0]);
     console.log(form);
     updateData(form, 'data');
   });

@@ -5,7 +5,7 @@ export const smtp = async (host, port, username, password) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3001/api/v1/smtp/',
+      url: '/api/v1/smtp',
       data: {
         host,
         port,
@@ -26,7 +26,7 @@ export const delSmtp = async (id) => {
   try {
     const res = await axios({
       method: 'DELETE',
-      url: `http://127.0.0.1:3001/api/v1/smtp/${id}`,
+      url: `/api/v1/smtp/${id}`,
     });
 
     show_alert('success', 'Smtp deleted');

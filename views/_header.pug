@@ -3,7 +3,9 @@ header
         span.ti-search
         input(type='search' placeholder='Search')
     .profile-menu
+        
         .profile-icon
-            span.ti-user
+            
+            img(src=`img/user/${user.photo}`  alt='secureNET-User')
         .dropdown-content
             a#logoutbtn(href='#' onclick='logout()') Logout

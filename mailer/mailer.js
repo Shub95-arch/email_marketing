@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const htmlToText = require('html-to-text');
+const pug = require('pug');
 
 module.exports = class Email {
   constructor(contact, smtp, from) {
@@ -25,16 +26,19 @@ module.exports = class Email {
     });
   }
   //send the actual mail
-  async send(template, subject, app, attachments = []) {
-    console.log(attachments);
+  async send(template, subject, app, data, attachments = []) {
+    // console.log(attachments);
     // if we want to send internal
     //1> Render HTML based on a pug temeplate
     let html;
     if (app === 'internal') {
+      // console.log(`${__dirname}/../views/email/${template}.pug`);
       html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
         firstName: this.firstName,
+        data,
         subject,
       });
+      // console.log(html);
     } else {
       html = template;
     }
@@ -61,5 +65,13 @@ module.exports = class Email {
 
   async sendWelcome() {
     await this.send('welcome', 'Welcome to the secureNET Family!', 'internal');
+  }
+  async sendVerify(otp) {
+    await this.send(
+      'verification',
+      'Email verification code!',
+      'internal',
+      otp
+    );
   }
 };

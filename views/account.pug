@@ -16,6 +16,9 @@ block content
                     .input-group
                         label(for='email') Email
                         input#email(type='email' name='email' value=`${user.email}` placeholder=`${user.email}`)
+                    .input-group
+                        label(for='photo') Photo
+                        input#photo(type='file' name='attachment' value=`${user.photo}` )
                     .form-actions
                         button(type='submit') Update Info
             .form-card

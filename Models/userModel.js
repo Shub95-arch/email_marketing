@@ -64,7 +64,7 @@ const userSchema = new mongoose.Schema({
       validator: function (el) {
         return el === this.password;
       },
-      message: 'ConfirmPassword do not match the Password',
+      message: 'Confirm Password do not match the Password',
     },
   },
   passwordChangedAT: Date,
@@ -105,6 +105,7 @@ userSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword
 ) {
+  // console.log('hello', candidatePassword, userPassword);
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 

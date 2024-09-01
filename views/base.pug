@@ -1,10 +1,13 @@
 doctype html
 head
+    block head
     
     meta(charset='UTF-8')
     meta(name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1')
-    title securenet | #{title}
+    title secureNET | #{title}
+    link(rel='icon' href='img/logo.ico' type='image/icon type')
     link(rel='stylesheet' href='https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
     link(rel='stylesheet' href='style.css')
     link(rel='stylesheet' href='style2.css')
     style.
@@ -42,26 +45,26 @@ input#sidebar-toggle(type='checkbox')
 .sidebar
     .sidebar-header
         h3.brand
-            span.ti-unlink
-            span secureNET
+            
+            img(src='img/new_logo.png' width='180px' alt='secureNET')
         label.ti-menu-alt(for='sidebar-toggle')
     .sidebar-menu
         ul
             li
-                a(href='')
+                a(href='activity')
                     span.ti-home
                     span Home
             li
                 a(href='send-mail')
-                    span.ti-agenda
+                    span.ti-control-forward
                     span Send Mail
             li
                 a(href='smtp')
-                    span.ti-clipboard
+                    span.ti-harddrives
                     span SMTP
             li
                 a(href='spoof-mail')
-                    span.ti-folder
+                    span.ti-direction
                     span Secure Mailer
             li
                 a(href='activity')
@@ -76,5 +79,6 @@ input#sidebar-toggle(type='checkbox')
 
     block content
 
-    
+    include _footer
     script(src='/js/bundle.js')
+    script(src='/js/transition.js')

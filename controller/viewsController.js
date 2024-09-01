@@ -2,10 +2,6 @@ const catchAsync = require('../utils/catchAsync');
 const User = require('../Models/userModel');
 const mongoose = require('mongoose');
 
-exports.getOverview = catchAsync(async (req, res, next) => {
-  res.status(200).render('index');
-});
-
 exports.getActivity = catchAsync(async (req, res, next) => {
   const { page = 1, limit = 10 } = req.query;
   const today = new Date();
@@ -91,11 +87,14 @@ exports.getActivity = catchAsync(async (req, res, next) => {
   res.status(200).render('index', {
     user,
     logs: logs[0] || [], // logs[0] because the aggregation results in an array
+    title: 'Activity Logs',
   });
 });
 
 exports.getAccount = catchAsync(async (req, res, next) => {
-  res.status(200).render('account');
+  res.status(200).render('account', {
+    title: 'User Account',
+  });
 });
 
 exports.getSmtp = catchAsync(async (req, res, next) => {
@@ -110,6 +109,13 @@ exports.getSmtp = catchAsync(async (req, res, next) => {
   });
   res.status(200).render('smtp', {
     user,
+    title: 'add SMTP',
+  });
+});
+
+exports.verification_mail = catchAsync(async (req, res, next) => {
+  res.status(200).render('verify', {
+    title: 'Verification',
   });
 });
 
@@ -117,12 +123,18 @@ exports.sendMail = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id).populate('smtp');
   res.status(200).render('send_mail', {
     user,
+    title: 'Send email campaigns',
   });
 });
+
 exports.spoofMail = catchAsync(async (req, res, next) => {
-  res.status(200).render('spoof_mail');
+  res.status(200).render('spoof_mail', {
+    title: 'Send spoof email',
+  });
 });
 
 exports.login = catchAsync(async (req, res, next) => {
-  res.status(200).render('login');
+  res.status(200).render('login', {
+    title: 'Log into your account',
+  });
 });

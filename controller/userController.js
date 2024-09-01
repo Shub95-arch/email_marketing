@@ -24,11 +24,12 @@ exports.uploadUserPhoto = upload.single('photo');
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
   req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
+  // console.log(req.file.filename);
   await sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`data/img/users/${req.file.filename}`);
+    .toFile(`data/img/user/${req.file.filename}`);
   next();
 });
 
@@ -44,6 +45,7 @@ const filterObj = (obj, ...allowedFileds) => {
 };
 
 exports.getMe = (req, res, next) => {
+  console.log('this me middleware is hit');
   req.params.id = req.user.id;
   next();
 };
