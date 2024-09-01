@@ -2,7 +2,9 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const path = require('path');
+const cors = require('cors');
 const app = express();
+app.enable('trust proxy');
 
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
@@ -23,6 +25,9 @@ const AppError = require('./utils/appError');
 app.set('view engine', 'pug'); // defining our render engine
 
 // app.set('views', path.join(__dirname, 'views'));
+
+app.use(cors());
+app.options('*', cors());
 
 //SECURITY MIDDLEWARES
 
