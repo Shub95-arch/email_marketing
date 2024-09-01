@@ -24,7 +24,7 @@ const CreateSendToken = (user, statusCode, res) => {
     httpOnly: true,
   };
   if (process.env.NODE_ENV === 'production') CookieOptions.secure = true;
-  res.cookie('jwt', token);
+  res.cookie('jwt', token, CookieOptions);
   user.password = undefined;
   console.log(token);
 
