@@ -81,6 +81,6 @@ export const verify = async (data) => {
       }, 1500);
     }
   } catch (err) {
-    show_alert('error', 'Code is invalid or has expired');
+    show_alert('error', err.response.data.message);
   }
 };

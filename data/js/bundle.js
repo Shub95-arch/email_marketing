@@ -6229,7 +6229,7 @@ var verify = exports.verify = /*#__PURE__*/function () {
         case 7:
           _context4.prev = 7;
           _context4.t0 = _context4["catch"](0);
-          (0, _alert.show_alert)('error', 'Code is invalid or has expired');
+          (0, _alert.show_alert)('error', _context4.t0.response.data.message);
         case 10:
         case "end":
           return _context4.stop();
@@ -6796,7 +6796,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "3644" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "48885" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

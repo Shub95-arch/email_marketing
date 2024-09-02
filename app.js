@@ -4,7 +4,7 @@ const session = require('express-session');
 const path = require('path');
 const cors = require('cors');
 const app = express();
-app.enable('trust proxy', 1);
+// app.enable('trust proxy');
 
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
@@ -49,10 +49,11 @@ app.use(
     saveUninitialized: true,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production' ? true : false,
+      // secure: process.env.NODE_ENV === 'production' ? true : false,
     }, // Set secure to true in production with HTTPS
   })
 );
+
 app.use(mongoSanitize());
 app.use(xss());
 app.use(hpp());
