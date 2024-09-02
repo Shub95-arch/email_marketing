@@ -102,7 +102,7 @@ exports.smtpMail = catchAsync(async (req, res, next) => {
       message,
       subject,
       'external',
-      null,
+      null, //to pass the data which is null in this case
       [
         {
           filename: fileName,

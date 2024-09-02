@@ -22,11 +22,13 @@ const CreateSendToken = (user, statusCode, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    secure: req.secure || req.headers('x-forwarded-proto') === 'https',
+    // secure: req.secure || req.headers('x-forwarded-proto') === 'https',    -- CANNOT USE THIS AS RATE LIMITN WILL CONFILCT WITH TRUST PROXY
   };
+  if (process.env.NODE_ENV === 'production') CookieOptions.secure = true;
+  console.log('is secure?', CookieOptions.secure);
   res.cookie('jwt', token, CookieOptions);
   user.password = undefined;
-  console.log(token);
+  // console.log(token);
 
   res.status(statusCode).json({
     status: 'success',
@@ -44,6 +46,8 @@ exports.preSignup = catchAsync(async (req, res, next) => {
     return next(new AppError('Password do not match'));
   }
 
+  console.log('body', name, email, password);
+
   // Generate OTP
   const otp = crypto.randomBytes(3).toString('hex'); // 6-digit OTP
   const otpExpires = Date.now() + 10 * 60 * 1000; // OTP valid for 10 minutes
@@ -57,6 +61,7 @@ exports.preSignup = catchAsync(async (req, res, next) => {
     otp,
     otpExpires,
   };
+  console.log('session', req.session.preSignup);
 
   // Send OTP email
   const contact = { email, name };
@@ -89,6 +94,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     otp: storedOtp,
     otpExpires,
   } = req.session.preSignup || {};
+  console.log(name, email, password);
 
   if (!storedOtp || otp !== storedOtp || Date.now() > otpExpires) {
     return next(new AppError('OTP is invalid or has expired', 400));

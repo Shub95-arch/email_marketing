@@ -4,7 +4,7 @@ const session = require('express-session');
 const path = require('path');
 const cors = require('cors');
 const app = express();
-app.enable('trust proxy');
+app.enable('trust proxy', 1);
 
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
@@ -31,7 +31,13 @@ app.options('*', cors());
 
 //SECURITY MIDDLEWARES
 
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+    crossOriginOpenerPolicy: false,
+  })
+);
 
 app.use(morgan('dev')); //morgan middleware
 app.use(express.json({ limit: '10kb' })); //now if we have a body more than 10kb it will not be served
@@ -41,7 +47,10 @@ app.use(
     secret: process.env.SESSION_SECRET, // Replace with a strong secret key
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: process.env.NODE_ENV === 'production' }, // Set secure to true in production with HTTPS
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production' ? true : false,
+    }, // Set secure to true in production with HTTPS
   })
 );
 app.use(mongoSanitize());
