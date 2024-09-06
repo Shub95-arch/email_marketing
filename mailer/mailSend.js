@@ -96,6 +96,7 @@ exports.smtpMail = catchAsync(async (req, res, next) => {
 
   const fileBuffer = req.file ? req.file.buffer : null;
   const fileName = req.file ? req.file.originalname : null;
+  const userID = req.user.id;
 
   try {
     const smtp_mail = await new Email(contact, smtp, fromMail).send(
@@ -108,46 +109,47 @@ exports.smtpMail = catchAsync(async (req, res, next) => {
           filename: fileName,
           content: fileBuffer,
         },
-      ]
+      ],
+      userID
     );
-    console.log(contact.email.split('\n'));
-    const emails = contact.email.split('\n');
+    // console.log(contact.email.split('\n'));
+    // const emails = contact.email.split('\n');
 
-    for (const el of emails) {
-      const logs = await Logs.create({
-        toMail: el.trim(),
-        fromEmail: fromMail.email,
-        status: 'success',
-        subject,
-        Body: message,
-        mailType: 'smtp',
-      });
+    // for (const el of emails) {
+    //   const logs = await Logs.create({
+    //     toMail: el.trim(),
+    //     fromEmail: fromMail.email,
+    //     status: 'success',
+    //     subject,
+    //     Body: message,
+    //     mailType: 'smtp',
+    //   });
 
-      await User.findByIdAndUpdate(req.user.id, {
-        $push: { logs: logs.id },
-      });
-    }
+    //   await User.findByIdAndUpdate(req.user.id, {
+    //     $push: { logs: logs.id },
+    //   });
+    // }
 
     res.status(200).json({
       status: 'success',
       message: 'email sent successfully',
     });
   } catch (err) {
-    const emails = contact.email.split('\n');
-    for (const el of emails) {
-      const logs = await Logs.create({
-        toMail: el.trim(),
-        fromEmail: fromMail.email,
-        status: 'failed',
-        subject,
-        Body: message,
-        mailType: 'smtp',
-      });
+    // const emails = contact.email.split('\n');
+    // for (const el of emails) {
+    //   const logs = await Logs.create({
+    //     toMail: el.trim(),
+    //     fromEmail: fromMail.email,
+    //     status: 'failed',
+    //     subject,
+    //     Body: message,
+    //     mailType: 'smtp',
+    //   });
 
-      await User.findByIdAndUpdate(req.user.id, {
-        $push: { logs: logs.id },
-      });
-    }
+    //   await User.findByIdAndUpdate(req.user.id, {
+    //     $push: { logs: logs.id },
+    //   });
+    // }
 
     res.status(400).json({
       status: 'error',

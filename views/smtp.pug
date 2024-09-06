@@ -7,16 +7,16 @@ block content
     form.smtp-form
         .input-group
             label(for='smtp-username') Username
-            input#smtp-username(type='text' name='smtp-username' placeholder='Username')
+            input#smtp-username(type='text' name='smtp-username' required=true placeholder='Username')
         .input-group
             label(for='smtp-host') Host
-            input#smtp-host(type='text' name='smtp-host' placeholder='Host')
+            input#smtp-host(type='text' name='smtp-host' required=true placeholder='Host')
         .input-group
             label(for='smtp-port') Port
-            input#smtp-port(type='number' name='smtp-port' placeholder='Port')
+            input#smtp-port(type='number' name='smtp-port' required=true placeholder='Port')
         .input-group
             label(for='smtp-password') Password
-            input#smtp-password(type='password' name='smtp-password' placeholder='Password')
+            input#smtp-password(type='password' name='smtp-password' required=true placeholder='Password')
         .form-actions
             button(type='submit') Save
 

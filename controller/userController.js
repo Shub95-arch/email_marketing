@@ -4,6 +4,7 @@ const AppError = require('../utils/appError');
 const multer = require('multer');
 const sharp = require('sharp');
 const Email_logs = require('../Models/emailLogs');
+const APIFeatures = require('../utils/apiFeatures');
 
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
@@ -85,7 +86,15 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 // THESE ARE ALL ADMIN FUNCTIONS
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find(req.query).select('-smtp -__v -logs');
+  const features = new APIFeatures(
+    User.find().select('-smtp -__v -logs'),
+    req.query
+  )
+    .filter()
+    .sorting()
+    .limitFields()
+    .pagination();
+  const users = await features.query;
   res.status(200).json({
     status: 'success',
     result: users.length,

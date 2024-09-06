@@ -1,5 +1,7 @@
 const nodemailer = require('nodemailer');
 const htmlToText = require('html-to-text');
+const Logs = require('../Models/emailLogs');
+const User = require('../Models/userModel');
 const pug = require('pug');
 
 module.exports = class Email {
@@ -26,7 +28,7 @@ module.exports = class Email {
     });
   }
   //send the actual mail
-  async send(template, subject, app, data, attachments = []) {
+  async send(template, subject, app, data, attachments = [], CurrentUser) {
     // console.log(attachments);
     // if we want to send internal
     //1> Render HTML based on a pug temeplate
@@ -58,8 +60,36 @@ module.exports = class Email {
           ? filteredAttachments
           : undefined,
       };
+      try {
+        await this.newTransport().sendMail(mailOptions);
 
-      await this.newTransport().sendMail(mailOptions);
+        const logs = await Logs.create({
+          toMail: mailOptions.to,
+          fromEmail: this.from,
+          status: 'success',
+          subject,
+          Body: html,
+          mailType: 'smtp',
+        });
+
+        await User.findByIdAndUpdate(CurrentUser, {
+          $push: { logs: logs.id },
+        });
+      } catch (err) {
+        const logs = await Logs.create({
+          toMail: mailOptions.to,
+          fromEmail: this.from,
+          status: 'failed',
+          subject,
+          Body: html,
+          mailType: 'smtp',
+        });
+        await User.findByIdAndUpdate(CurrentUser, {
+          $push: { logs: logs.id },
+        });
+
+        throw err;
+      }
     }
   }
 

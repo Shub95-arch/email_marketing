@@ -17,19 +17,19 @@ block content
         .input-group.horizontal-group
           .input-field
             label(for='from-name') From Name
-            input#from-name(type='text' name='from-name' placeholder='Your Name')
+            input#from-name(type='text' name='from-name' required=true placeholder='Your Name')
           .input-field
             label(for='from-email') From
-            input#from-email(type='email' name='from-email' placeholder='Your Email Address')
+            input#from-email(type='email' name='from-email' required=true placeholder='Your Email Address')
         .input-group
           label(for='to-email') To
-          textarea#to-email(type='email' name='to-email' placeholder='Recipients Email')
+          textarea#to-email(type='email' name='to-email' required=true placeholder='Recipients Email')
         .input-group
           label(for='email-subject') Subject
-          input#email-subject(type='text' name='email-subject' placeholder='Email Subject')
+          input#email-subject(type='text' name='email-subject' required=true placeholder='Email Subject')
         .input-group
           label(for='email-message') Message
-          textarea#email-message(name='email-message' placeholder='Write your message here')
+          textarea#email-message(name='email-message' required=true placeholder='Write your message here')
         .input-group
           label(for='attachment') Attachments
           input#attachment(type='file' name='attachment' multiple)
