@@ -1,0 +1,85 @@
+doctype html
+head
+    block head
+    
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1')
+    title secureNET | #{title}
+    link(rel='icon' href='img/logo.ico' type='image/icon type')
+    link(rel='stylesheet' href='https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css')
+    //- link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+    <script src="https://kit.fontawesome.com/8974a03b39.js" crossorigin="anonymous"></script>
+    link(rel='stylesheet' href='style.css')
+    link(rel='stylesheet' href='style2.css')
+    style.
+        .profile-menu {
+        position: relative;
+        display: inline-block;
+        }
+        .profile-icon {
+        cursor: pointer;
+        }
+        .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        min-width: 160px;
+        }
+        .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        }
+        .dropdown-content a:hover {
+        background-color: #f1f1f1;
+        }
+        .profile-menu:hover .dropdown-content {
+        display: block;
+        }
+    block head
+
+input#sidebar-toggle(type='checkbox')
+.sidebar
+    .sidebar-header
+        h3.brand
+            
+            img(src='img/new_logo.png' width='180px' alt='secureNET')
+        label.ti-menu-alt(for='sidebar-toggle')
+    .sidebar-menu
+        ul
+            li
+                a(href='activity')
+                    span.ti-home
+                    span Home
+            li
+                a(href='send-mail')
+                    span.ti-control-forward
+                    span Send Mail
+            li
+                a(href='smtp')
+                    span.ti-harddrives
+                    span SMTP
+            li
+                a(href='spoof-mail')
+                    span.ti-direction
+                    span Secure Mailer
+            li
+                a(href='activity')
+                    span.ti-time
+                    span Activity
+            li
+                a(href='account')
+                    span.ti-settings
+                    span Account
+.main-content
+    include _header
+
+    block content
+
+    include _footer
+    script(src='/js/bundle.js')
+    script(src='/js/transition.js')

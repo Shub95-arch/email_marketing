@@ -1,0 +1,140 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7f6;
+  margin: 0;
+  padding: 0;
+}
+
+/* Styling the SMTP form */
+.smtp-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 40px auto;
+  max-width: 800px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  flex-basis: 20%; /* Ensures all inputs fit in one row */
+}
+
+.input-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: 10px; /* Ensures the button stays aligned in the row */
+}
+
+.form-actions button {
+  padding: 10px 20px;
+  background-color: #4541b6;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.form-actions button:hover {
+  background-color: #0056b3;
+}
+
+/* Recent activity section */
+.recent {
+  margin-top: 20px;
+}
+
+.activity-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.activity-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.activity-card h3 {
+  margin-bottom: 20px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  padding: 12px;
+  text-align: left;
+}
+
+table thead th {
+  background-color: #f1f1f1;
+  font-weight: bold;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.badge {
+  padding: 5px 10px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.7.5rem;
+}
+
+.badge.success {
+  background-color: #def7ec;
+}
+
+.badge.warning {
+  background-color: #ffc107;
+}
+
+/* Media Query for Mobile Devices */
+@media (max-width: 768px) {
+  .smtp-form {
+    flex-direction: column;
+  }
+
+  .input-group {
+    flex-basis: 100%; /* Full width on mobile */
+    margin: 5px 0; /* Smaller margins on mobile */
+  }
+
+  .form-actions {
+    justify-content: center;
+    margin-left: 0; /* Reset margin for centered button */
+    width: 100%; /* Ensure button is centered */
+    margin-top: 10px;
+  }
+}

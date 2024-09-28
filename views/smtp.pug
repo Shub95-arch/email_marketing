@@ -1,0 +1,55 @@
+extends base
+
+block head
+    link(rel='stylesheet' href='style3.css')
+
+block content
+    form.smtp-form
+        .input-group
+            label(for='smtp-username') Username
+            input#smtp-username(type='text' name='smtp-username' required=true placeholder='Username')
+        .input-group
+            label(for='smtp-host') Host
+            input#smtp-host(type='text' name='smtp-host' required=true placeholder='Host')
+        .input-group
+            label(for='smtp-port') Port
+            input#smtp-port(type='number' name='smtp-port' required=true placeholder='Port')
+        .input-group
+            label(for='smtp-password') Password
+            input#smtp-password(type='password' name='smtp-password' required=true placeholder='Password')
+        .form-actions
+            button(type='submit') Save
+
+    section.recent
+        .activity-grid
+            .activity-card
+                h3 Your SMTP
+                .table-responsive
+                    table
+                        thead
+                            tr
+                                th Host
+                                th Port
+                                th Username
+                                th Password
+                                th Status
+                                th Action
+                        tbody
+                            each smtp in user.smtp
+                                tr
+                                    td #{smtp.host}
+                                    td #{smtp.port}
+                                    td #{smtp.username}
+                                    td #{smtp.password}
+                                    td
+                                        span.badge.success success
+                                    td
+                                        button(type='button', class='btn btn-danger btn-sm', data-id=smtp._id)
+                                            i(class='ti-trash')
+
+    .pagination-box
+        .pagination
+            .pagination-buttons
+                a.pagination-btn#prev-btn(href=`/activity?page=${prevPage}&limit=${limit}`) Previous
+                span.pagination-gap
+                a.pagination-btn#next-btn(href=`/activity?page=${nextPage}&limit=${limit}`) Next

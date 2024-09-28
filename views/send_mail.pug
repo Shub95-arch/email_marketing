@@ -1,0 +1,60 @@
+extends base
+
+block content
+  link(rel='stylesheet' href='style4.css')
+
+  .smtp-selection
+    .input-group
+      label(for='smtp-server') Select SMTP Server
+      select#smtp-server(name='smtp-server')
+        each smtp in user.smtp
+          option(value=`${smtp.host}|${smtp.port}|${smtp.username}|${smtp.password}`)=`Username: ${smtp.username} - Host: ${smtp.host}`
+        
+
+  .container
+    form.form-container.form-smtp
+      .form-fields
+        .input-group.horizontal-group
+          .input-field
+            label(for='from-name') From Name
+            input#from-name(type='text' name='from-name' required=true placeholder='Your Name')
+          .input-field
+            label(for='from-email') From
+            input#from-email(type='email' name='from-email' required=true placeholder='Your Email Address')
+        .input-group
+          label(for='to-email') To
+          textarea#to-email(type='email' name='to-email' required=true placeholder='Recipients Email')
+        .input-group
+          label(for='email-subject') Subject
+          input#email-subject(type='text' name='email-subject' required=true placeholder='Email Subject')
+        .input-group
+          label(for='email-message') Message
+          textarea#email-message(name='email-message' required=true placeholder='Write your message here')
+        .input-group
+          label(for='attachment') Attachments
+          .custom-file-upload
+            input#attachment(type='file' name='attachment' multiple accept='*' style='display: none;' onchange='updateFileList(this)')
+            label(for='attachment') 
+              i.fa-solid.fa-upload  Browse
+            .file-list#file-list Your selected files will appear here...
+      .form-actions
+        button#send_mail_btn(type='submit') Send Email
+
+
+    .preview-container
+      .preview-title Message Preview
+      #message-preview.preview-content Your HTML message will appear here...
+
+  script.
+    document.getElementById('email-message').addEventListener('input', function() {
+      const messagePreview = document.getElementById('message-preview');
+      messagePreview.innerHTML = this.value || 'Your HTML message will appear here...';
+    });
+
+
+    function updateFileList(input) {
+      const fileList = document.getElementById('file-list');
+      const files = input.files;
+      const fileNames = Array.from(files).map(file => file.name).join(', ');
+      fileList.textContent = fileNames || 'No files selected';
+    }

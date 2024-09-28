@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SMTP Configuration</title>
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f7f6;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .smtp-form {
+        display: flex;
+        flex-direction: row;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .input-group {
+        margin-right: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .input-group:last-child {
+        margin-right: 0;
+      }
+
+      .input-group label {
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+      }
+
+      .input-group input {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #333;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        width: 180px;
+      }
+
+      .input-group input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+      }
+
+      .form-actions {
+        display: flex;
+        align-items: center;
+      }
+
+      .form-actions button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 15px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+
+      .form-actions button:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+      }
+
+      .form-actions button:active {
+        transform: translateY(1px);
+      }
+
+      @media (max-width: 768px) {
+        .smtp-form {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .input-group {
+          margin-right: 0;
+          margin-bottom: 15px;
+        }
+
+        .input-group input {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <form class="smtp-form">
+      <div class="input-group">
+        <label for="smtp-username">Username</label>
+        <input
+          type="text"
+          id="smtp-username"
+          name="smtp-username"
+          placeholder="Username"
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="smtp-host">Host</label>
+        <input type="text" id="smtp-host" name="smtp-host" placeholder="Host" />
+      </div>
+
+      <div class="input-group">
+        <label for="smtp-port">Port</label>
+        <input
+          type="number"
+          id="smtp-port"
+          name="smtp-port"
+          placeholder="Port"
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="smtp-password">Password</label>
+        <input
+          type="password"
+          id="smtp-password"
+          name="smtp-password"
+          placeholder="Password"
+        />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit">Save</button>
+      </div>
+    </form>
+  </body>
+</html>

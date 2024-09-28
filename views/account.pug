@@ -1,0 +1,37 @@
+extends base
+
+block content
+    main
+        // Box with outlined border for Profile Settings
+        .profile-settings-box
+            h2.dash-title Profile Settings
+
+        .account-forms
+            .form-card
+                h3 Change Name &amp; Email
+                form#profile-change-form
+                    .input-group
+                        label(for='name') Name
+                        input#name(type='text' name='name' value=`${user.name}` placeholder=`${user.name}`)
+                    .input-group
+                        label(for='email') Email
+                        input#email(type='email' name='email' value=`${user.email}` placeholder=`${user.email}`)
+                    .input-group
+                        label(for='photo') Photo
+                        input#photo(type='file' name='attachment' value=`${user.photo}` )
+                    .form-actions
+                        button(type='submit') Update Info
+            .form-card
+                h3 Change Password
+                form#password-change-form
+                    .input-group
+                        label(for='current-password') Current Password
+                        input#current-password(type='password' name='current-password' placeholder='Enter current password')
+                    .input-group
+                        label(for='new-password') New Password
+                        input#new-password(type='password' name='new-password' placeholder='Enter new password')
+                    .input-group
+                        label(for='confirm-password') Confirm New Password
+                        input#confirm-password(type='password' name='confirm-password' placeholder='Confirm new password')
+                    .form-actions
+                        button(type='submit') Change Password
