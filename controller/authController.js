@@ -262,7 +262,6 @@ exports.checkExpire = catchAsync(async (req, res, next) => {
   //check for expiration date
   const user = await User.findById(req.user.id);
   expirationDate = new Date(user.renewalDate);
-
   expirationDate.setDate(expirationDate.getDate() + user.durationDays);
 
   //check for credits
