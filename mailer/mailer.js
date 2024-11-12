@@ -1,8 +1,9 @@
 const nodemailer = require('nodemailer');
 const htmlToText = require('html-to-text');
-const Logs = require('../Models/emailLogs');
-const User = require('../Models/userModel');
+
 const pug = require('pug');
+const Queue = require('bull');
+const emailQueue = new Queue('emailQueue');
 
 module.exports = class Email {
   constructor(contact, smtp, from) {
@@ -29,28 +30,29 @@ module.exports = class Email {
   }
   //send the actual mail
   async send(template, subject, app, data, attachments = [], CurrentUser) {
-    // console.log(attachments);
-    // if we want to send internal
-    //1> Render HTML based on a pug temeplate
     let html;
     if (app === 'internal') {
-      // console.log(`${__dirname}/../views/email/${template}.pug`);
       html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
         firstName: this.firstName,
         data,
         subject,
       });
-      // console.log(html);
     } else {
       html = template;
     }
 
-    //2> Define the email options
     for (const recipient of this.to) {
       const filteredAttachments = attachments.filter(
         (attachment) => attachment && attachment.filename && attachment.content
       );
+
       const mailOptions = {
+        host: this.host,
+        port: this.port,
+        auth: {
+          user: this.username,
+          pass: this.pass,
+        },
         from: this.from,
         to: recipient.trim(),
         subject,
@@ -60,35 +62,16 @@ module.exports = class Email {
           ? filteredAttachments
           : undefined,
       };
-      try {
+      if (app === 'internal') {
         await this.newTransport().sendMail(mailOptions);
+      }
 
-        const logs = await Logs.create({
-          toMail: mailOptions.to,
-          fromEmail: this.from,
-          status: 'success',
-          subject,
-          Body: html,
-          mailType: 'smtp',
+      // Add the email job to the queue
+      else {
+        await emailQueue.add({
+          mailOptions,
+          CurrentUser,
         });
-
-        await User.findByIdAndUpdate(CurrentUser, {
-          $push: { logs: logs.id },
-        });
-      } catch (err) {
-        const logs = await Logs.create({
-          toMail: mailOptions.to,
-          fromEmail: this.from,
-          status: 'failed',
-          subject,
-          Body: html,
-          mailType: 'smtp',
-        });
-        await User.findByIdAndUpdate(CurrentUser, {
-          $push: { logs: logs.id },
-        });
-
-        throw err;
       }
     }
   }

@@ -7,16 +7,12 @@ dotenv.config({ path: './config.env' });
 const DB = process.env.DATABASE;
 //Mongoose-Connection
 
-mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log('DB connection successful!');
-  });
+mongoose.connect(DB, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true,
+});
 
 const port = 3001;
 const server = app.listen(port, () => {

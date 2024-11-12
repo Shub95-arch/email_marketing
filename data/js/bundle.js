@@ -6413,7 +6413,7 @@ var smtpMail = exports.smtpMail = /*#__PURE__*/function () {
         case 11:
           res = _context2.sent;
           if (res.data.status === 'success') {
-            (0, _alert.show_alert)('success', 'Email Sent');
+            (0, _alert.show_alert)('success', 'Campaign Added to Queue');
           }
           _context2.next = 18;
           break;
@@ -6796,7 +6796,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "48885" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "18188" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

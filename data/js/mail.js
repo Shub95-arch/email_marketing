@@ -67,7 +67,7 @@ export const smtpMail = async (
     });
 
     if (res.data.status === 'success') {
-      show_alert('success', 'Email Sent');
+      show_alert('success', 'Campaign Added to Queue');
     }
   } catch (err) {
     show_alert('error', err.response.data.message);
